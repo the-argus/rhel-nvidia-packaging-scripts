@@ -19,7 +19,7 @@ function build_dkms () {
         --define "is_dkms 1" \
         --define "is_latest 1" \
         --define "epoch 3" \
-        --target "${arch}" \
+        --target "${ARCH}" \
         -v -bb SPECS/dkms-nvidia.spec
     [ -n $VERBOSE ] && echo ">>> COPYING DKMS TO OUTPUT..."
     find -name "*.rpm" -exec cp -v {} $OUTPUT/ \;
