@@ -9,12 +9,12 @@ function build_dkms () {
     mkdir -p BUILD BUILDROOT RPMS SRPMS SOURCES SPECS
     cp dkms-nvidia.conf SOURCES/
     # convert tarball to use VERSION instead of ACTUAL_VERSION
-    mv nvidia-kmod-${ACTUAL_VERSION}-${ARCH}.tar.xz SOURCES/nvidia-kmod-${VERSION}-${ARCH}.tar.xz
+    mv nvidia-kmod-${ACTUAL_VERSION}-${ARCH}.tar.xz SOURCES/
     cp dkms-nvidia.spec SPECS/  
     rpmbuild \
         --define "%_topdir $(pwd)" \
         --define "debug_package %{nil}" \
-        --define "version $VERSION" \
+        --define "version $ACTUAL_VERSION" \
         --define "driver_branch latest-dkms" \
         --define "is_dkms 1" \
         --define "is_latest 1" \
