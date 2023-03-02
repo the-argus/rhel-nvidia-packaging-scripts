@@ -23,6 +23,7 @@ source $SCRIPT_DIR/stages/08-build-modprobe-common
 source $SCRIPT_DIR/stages/09-build-persistenced
 source $SCRIPT_DIR/stages/10-build-settings
 source $SCRIPT_DIR/stages/11-build-xconfig
+source $SCRIPT_DIR/stages/12-build-yum-plugin
 
 # declare some variables
 TARTYPE=
