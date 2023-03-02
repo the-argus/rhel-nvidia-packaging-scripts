@@ -9,3 +9,4 @@ if [ "$1" == "deep" ]; then
 fi
 
 rm -rf $OUTPUT
+rm -rf $ROOT/*.run
