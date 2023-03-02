@@ -51,7 +51,7 @@ pushd $BUILDDIR > /dev/null
 git_clone_driver_dkms
 download_runfile
 pushd yum-packaging-nvidia-driver > /dev/null
-build_tarballs
+ACTUAL_VERSION=$(build_tarballs)
 build_driver
 popd > /dev/null
 pushd yum-packaging-dkms-nvidia > /dev/null
