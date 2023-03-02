@@ -1,0 +1,22 @@
+#!/bin/sh
+
+source ./lib/clone
+
+function build-kmod-common () {
+    clone yum-packaging-nvidia-kmod-common
+    pushd yum-packaging-nvidia-kmod-common > /dev/null
+	mkdir BUILD BUILDROOT RPMS SRPMS SOURCES SPECS
+	cp 60-nvidia.rules SOURCES/
+	cp 99-nvidia.conf SOURCES/
+	cp nvidia.conf SOURCES/
+	cp nvidia-kmod-common.spec SPECS/  
+	rpmbuild \
+	    --define "%_topdir $(pwd)" \
+	    --define "debug_package %{nil}" \
+	    --define "version $VERSION" \
+	    --define "epoch 3" \
+	    --target "noarch" \
+	    -v -bb SPECS/nvidia-kmod-common.spec  
+    find -name "*.rpm" -exec cp -v {} $OUTPUT/ \;
+    popd > /dev/null
+}

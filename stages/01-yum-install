@@ -1,0 +1,39 @@
+#!/bin/sh
+
+function yum-install () {
+    # separate call to yum to install EPEL
+    sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-${RHEL_VERSION}.noarch.rpm
+
+    # Packaging
+    list=("rpm-build")  
+    # Kernel modules (dkms-nvidia, precompiled-kmod)
+    list+=("dkms")
+    # Kernel headers and source code (precompiled-kmod)
+    list+=("kernel-headers-$KERNEL" "kernel-devel-$KERNEL")  
+    # Compilation
+    list+=("m4" "devtoolset-9-gcc")
+    # Misc (nvidia-driver & nvidia-persistenced)
+    list+=("libappstream-glib" "libtirpc-devel")  
+    # Python (nvidia-plugin)
+    list+=("python36")
+    # Repository metadata
+    list+=("createrepo" "openssl")  
+    # Desktop integration (nvidia-settings)
+    list+=("gtk2-devel" "gtk3-devel" "jansson-devel" "dbus-devel" "desktop-file-utils")
+    # X.org utilties (nvidia-settings)
+    list+=("libXext-devel" "libXrandr-devel")
+    # GLVND (nvidia-settings)
+    list+=("mesa-libGL-devel" "mesa-libEGL-devel")
+    # Video extensions (nvidia-settings)
+    list+=("libXxf86vm-devel" "libXv-devel" "libvdpau-devel")  
+    # Install all the build dependencies
+    if [ -z $DONT_YUM_INSTALL ]; then
+        sudo yum install ${list[@]}
+    fi
+
+    # instead of doing this:
+    # export IGNORE_CC_MISMATCH=1
+    # we use gcc 9 as it expects
+    echo ">>> Adding /opt/rh/devtoolset-9/root/bin to path. \"root\" may not be the correct subdirectory, this is untested."
+    export PATH=/opt/rh/devtoolset-9/root/bin:$PATH
+}

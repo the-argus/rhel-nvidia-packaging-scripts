@@ -1,0 +1,23 @@
+#!/bin/sh
+
+source. /lib/clone
+
+function build-settings () {
+    clone yum-packaging-nvidia-settings
+    pushd yum-packaging-nvidia-settings > /dev/null
+	mkdir BUILD BUILDROOT RPMS SRPMS SOURCES SPECS
+	wget "$SETTINGS_URL" -O "SOURCES/$SETTINGS_FILENAME"
+	cp *.desktop SOURCES/
+	cp *.patch SOURCES/
+	cp *.xml SOURCES/
+	cp nvidia-settings.spec SPECS/  
+	rpmbuild \
+	    --define "%_topdir $(pwd)" \
+	    --define "debug_package %{nil}" \
+	    --define "version $VERSION" \
+	    --define "epoch 3" \
+	    --define "extension $extension" \
+	    -v -bb SPECS/nvidia-settings.spec  
+    find -name "*.rpm" -exec cp -v {} $OUTPUT/ \;
+    popd > /dev/null
+}

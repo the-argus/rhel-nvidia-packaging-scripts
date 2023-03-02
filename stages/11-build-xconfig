@@ -1,0 +1,25 @@
+#!/bin/sh
+
+source ./lib/clone
+
+function build-xconfig () {
+    clone yum-packaging-nvidia-xconfig
+    pushd yum-packaging-nvidia-xconfig > /dev/null
+	mkdir BUILD BUILDROOT RPMS SRPMS SOURCES SPECS
+	wget "$XCONFIG_URL" -O "SOURCES/$XCONFIG_FILENAME"
+	cp *.patch SOURCES/
+	cp nvidia-xconfig.spec SPECS/  
+	# latest-dkms
+	rpmbuild \
+	    --define "%_topdir $(pwd)" \
+	    --define "debug_package %{nil}" \
+	    --define "version $VERSION" \
+	    --define "driver_branch latest-dkms" \
+	    --define "is_dkms 1" \
+	    --define "is_latest 1" \
+	    --define "epoch 3" \
+	    --define "extension $extension" \
+	    -v -bb SPECS/nvidia-xconfig.spec
+    find -name "*.rpm" -exec cp -v {} $OUTPUT/ \;
+    popd > /dev/null
+}

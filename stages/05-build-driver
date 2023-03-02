@@ -1,0 +1,91 @@
+#!/bin/sh
+
+function build-driver () {
+    if [ "$DOWNLOAD_FROM" == "UDA" ]; then
+        TARTYPE="bz2"
+        
+        PERSISTENCED_FILENAME=nvidia-persistenced-${VERSION}.tar.${TARTYPE}
+        MODPROBE_FILENAME=nvidia-modprobe-${VERSION}.tar.${TARTYPE}
+        SETTINGS_FILENAME=nvidia-settings-${VERSION}.tar.${TARTYPE}
+        XCONFIG_FILENAME=nvidia-xconfig-${VERSION}.tar.${TARTYPE}
+        
+        PERSISTENCED_URL=https://download.nvidia.com/XFree86/nvidia-persistenced/${PERSISTENCED_FILENAME}
+        MODPROBE_URL=https://download.nvidia.com/XFree86/nvidia-modprobe/${MODPROBE_FILENAME}
+        SETTINGS_URL=https://download.nvidia.com/XFree86/nvidia-settings/${SETTINGS_FILENAME}
+        XCONFIG_URL=https://download.nvidia.com/XFree86/nvidia-xconfig/${XCONFIG_FILENAME}
+    elif [ "$DOWNLOAD_FROM" == "github" ]; then
+        TARTYPE="gz"
+        
+        # this is the name of the file for every tarball, on remote
+        FILENAME=${VERSION}.tar.${TARTYPE}
+        # same filenames as UDA that we will have wget output to
+        PERSISTENCED_FILENAME=nvidia-persistenced-${VERSION}.tar.${TARTYPE}
+        MODPROBE_FILENAME=nvidia-modprobe-${VERSION}.tar.${TARTYPE}
+        SETTINGS_FILENAME=nvidia-settings-${VERSION}.tar.${TARTYPE}
+        XCONFIG_FILENAME=nvidia-xconfig-${VERSION}.tar.${TARTYPE}
+
+        PERSISTENCED_URL=https://github.com/NVIDIA/nvidia-persistenced/archive/${FILENAME}
+        MODPROBE_URL=https://github.com/NVIDIA/nvidia-modprobe/archive/${FILENAME}
+        SETTINGS_URL=https://github.com/NVIDIA/nvidia-settings/archive/${FILENAME}
+        XCONFIG_URL=https://github.com/NVIDIA/nvidia-xconfig/archive/${FILENAME}
+    else
+        echo "Unknown url source \"${DOWNLOAD_FROM}\""
+        exit 1
+    fi
+
+    function patch_tarball () {
+        TARPATCH_TMPDIR=/tmp/nvidia-driver-tarball-patch
+        rm -rf $TARPATCH_TMPDIR
+        mkdir -p $TARPATCH_TMPDIR
+
+        local prefix=$1
+        local tversion=$2
+        local tarch=$3
+        local ext=$4
+        local filename="$prefix-$tversion-${tarch}.${ext}"
+        
+        cp $filename $TARPATCH_TMPDIR
+        pushd $TARPATCH_TMPDIR > /dev/null
+
+        tar -xf $filename
+        # rename the directory
+        mv "$prefix-${tversion}-${tarch}" "$prefix-${VERSION}-${tarch}"
+        # now re-tar it
+        if [ "$ext" == "tar.xz" ]; then
+            tar -cJf "$prefix-${VERSION}-${tarch}.${ext}" "$prefix-${VERSION}-${tarch}"
+        elif [ "$ext" == "tar.bz2" ]; then
+            tar -cjf "$prefix-${VERSION}-${tarch}.${ext}" "$prefix-${VERSION}-${tarch}"
+        fi
+        popd > /dev/null
+
+        mv "$TARPATCH_TMPDIR/$prefix-${VERSION}-${tarch}.${ext}" SOURCES/
+    }
+
+    mkdir -p BUILD BUILDROOT RPMS SRPMS SOURCES SPECS
+    cp *.rules SOURCES/
+    cp *.conf SOURCES/
+    if [ -z $DONT_PATCH_TARBALL ]; then
+        patch_tarball "nvidia-driver" "$ACTUAL_VERSION" "$ARCH" "tar.xz"
+    fi
+
+    if [ ! -f SOURCES/nvidia-driver-${VERSION}-${ARCH}.tar.xz ]; then
+        echo ">>> Warning: no patched tarball found, you may want to unset DONT_PATCH_TARBALL."
+    fi
+    cp nvidia-driver.spec SPECS/
+    # thing that RPM wants for some reason
+    echo "meaningless file" > SOURCES/alternate-install-present
+    rpmbuild \
+       --define "%_topdir $(pwd)" \
+       --define "debug_package %{nil}" \
+       --define "version $VERSION" \
+       --define "driver_branch latest-dkms" \
+       --define "is_dkms 1" \
+       --define "is_latest 1" \
+       --define "epoch 3" \
+       --target "${ARCH}" \
+       --buildroot "BUILD" \
+       -v -bb SPECS/nvidia-driver.spec
+    
+    # copy the resulting RPM to output
+    find -name "*.rpm" -exec cp -v {} $OUTPUT/ \;
+}

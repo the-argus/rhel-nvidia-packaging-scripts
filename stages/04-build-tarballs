@@ -1,0 +1,23 @@
+#!/bin/sh
+
+function build-tarballs () {
+    # variables needed by the generate-tarballs
+    export RUN_FILE="$ROOT/$RUNFILENAME"
+    export extension=$TARTYPE
+    export major=$VMAJOR
+    export arch=$ARCH
+
+    rm -rf temp
+    # generate the tarballs
+    if [ -z $DONT_BUILD_TARBALLS ]; then
+        if [ "$ARCH" == "aarch64" ]; then 
+              ./nvidia-generate-tarballs-${ARCH}.sh
+        elif [ "$ARCH" == "pp64le" ]; then 
+            ./nvidia-generate-tarballs-${ARCH}.sh
+        else
+            ./nvidia-generate-tarballs.sh
+        fi
+    fi
+    ACTUAL_VERSION=$(ls nvidia-driver-*-${ARCH}.tar.xz | sed -re "s/nvidia-driver-([0-9]{3}.[0-9]{2})-${ARCH}.tar.xz/\1/g")
+    echo ">>> ACTUAL VERSION OF DOWNLOADED DRIVER: $ACTUAL_VERSION"
+}

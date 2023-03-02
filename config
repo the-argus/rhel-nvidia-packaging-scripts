@@ -1,0 +1,22 @@
+# originally tested with 520.56.06
+# 470.141.03
+VMAJOR="470"
+VMINOR="141"
+VERSION="${VMAJOR}.${VMINOR}.03"
+# CUDA_VERSION="11.8.0"
+
+# only tested with x86_64
+ARCH="x86_64"
+
+ROOT="$PWD"
+
+KERNEL=$(uname -r)
+OUTPUT="$ROOT/rpm-nvidia"
+
+# only tested with 7
+RHEL_VERSION=$(rpm -E %rhel)
+
+# can also be "github"
+DOWNLOAD_FROM="UDA"
+
+BUILDDIR="$ROOT/nvidia-${VERSION}-build"

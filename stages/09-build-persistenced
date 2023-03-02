@@ -1,0 +1,26 @@
+#!/bin/sh
+
+source ./lib/clone
+
+function build-persistenced () {
+    clone yum-packaging-nvidia-persistenced
+    pushd yum-packaging-nvidia-persistenced > /dev/null
+	mkdir BUILD BUILDROOT RPMS SRPMS SOURCES SPECS
+	wget "$PERSISTENCED_URL" -O "SOURCES/$PERSISTENCED_FILENAME"
+	cp *init* SOURCES/
+	cp *.service SOURCES/
+	cp nvidia-persistenced.spec SPECS/
+	rpmbuild \
+	    --define "%_topdir $(pwd)" \
+	    --define "debug_package %{nil}" \
+	    --define "version $VERSION" \
+	    --define "driver_branch latest-dkms" \
+	    --define "is_dkms 1" \
+	    --define "is_latest 1" \
+	    --define "epoch 3" \
+	    --define "extension $extension" \
+	    -v -bb SPECS/nvidia-persistenced.spec
+
+    find -name "*.rpm" -exec cp -v {} $OUTPUT/ \;
+    popd > /dev/null
+}

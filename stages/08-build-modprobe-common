@@ -1,0 +1,24 @@
+#!/bin/sh
+
+source ./lib/clone
+
+function build-modprobe-common () {
+    clone yum-packaging-nvidia-modprobe
+    pushd yum-packaging-nvidia-modprobe > /dev/null
+	mkdir BUILD BUILDROOT RPMS SRPMS SOURCES SPECS
+	wget "$MODPROBE_URL" -O "SOURCES/$MODPROBE_FILENAME"
+	cp *.patch SOURCES/
+	cp nvidia-modprobe.spec SPECS/
+	rpmbuild \
+	    --define "%_topdir $(pwd)" \
+	    --define "debug_package %{nil}" \
+	    --define "version $VERSION" \
+	    --define "driver_branch latest-dkms" \
+	    --define "is_dkms 1" \
+	    --define "is_latest 1" \
+	    --define "epoch 3" \
+	    --define "extension $extension" \
+	    -v -bb SPECS/nvidia-modprobe.spec
+    find -name "*.rpm" -exec cp -v {} $OUTPUT/ \;
+    popd > /dev/null
+}

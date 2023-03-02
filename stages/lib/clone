@@ -1,0 +1,8 @@
+#!/bin/sh
+
+function clone () {
+    local branch="${VMAJOR}-rhel${RHEL_VERSION}"
+    if [ ! -d $1 ]; then
+        git clone -b $branch "https://github.com/NVIDIA/$1"
+    fi
+}

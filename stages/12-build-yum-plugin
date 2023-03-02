@@ -1,0 +1,18 @@
+#!/bin/sh
+
+function build-yum-plugin () {
+    if [ ! -d "yum-packaging-nvidia-plugin" ]; then
+        git clone -b "rhel$RHEL_VERSION" "https://github.com/NVIDIA/yum-packaging-nvidia-plugin"
+    fi
+    pushd yum-packaging-nvidia-plugin > /dev/null
+	mkdir BUILD BUILDROOT RPMS SRPMS SOURCES SPECS
+	cp nvidia.conf SOURCES/
+	cp nvidia-yum.py SOURCES/
+	cp yum-plugin-nvidia.spec SPECS/  
+	rpmbuild \
+	    --define "%_topdir $(pwd)" \
+	    --define "debug_package %{nil}" \
+	    -v -bb SPECS/yum-plugin-nvidia.spec  
+    find -name "*.rpm" -exec cp -v {} $OUTPUT/ \;
+    popd > /dev/null
+}

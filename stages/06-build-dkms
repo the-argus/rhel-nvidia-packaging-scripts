@@ -1,0 +1,25 @@
+#!/bin/sh
+
+function build-dkms () {
+	# bring the tarball from before into this directory
+	rsync -av ../yum-packaging-nvidia-driver/nvidia-kmod-${ACTUAL_VERSION}-${ARCH}.tar.xz $PWD/
+
+	# set up build
+	mkdir -p BUILD BUILDROOT RPMS SRPMS SOURCES SPECS
+	cp dkms-nvidia.conf SOURCES/
+	# convert tarball to use VERSION instead of ACTUAL_VERSION
+	patch_tarball "nvidia-kmod" "$ACTUAL_VERSION" "$ARCH" "tar.xz"
+	# mv nvidia-kmod-${ACTUAL_VERSION}-${ARCH}.tar.xz SOURCES/
+	cp dkms-nvidia.spec SPECS/  
+	rpmbuild \
+	    --define "%_topdir $(pwd)" \
+	    --define "debug_package %{nil}" \
+	    --define "version $VERSION" \
+	    --define "driver_branch latest-dkms" \
+	    --define "is_dkms 1" \
+	    --define "is_latest 1" \
+	    --define "epoch 3" \
+	    --target "${arch}" \
+	    -v -bb SPECS/dkms-nvidia.spec  
+    find -name "*.rpm" -exec cp -v {} $OUTPUT/ \;
+}
