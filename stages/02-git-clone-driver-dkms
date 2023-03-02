@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source ./lib/clone
+source $SCRIPT_DIR/stages/lib/clone
 
 function git_clone_driver_dkms () {
     clone yum-packaging-nvidia-driver

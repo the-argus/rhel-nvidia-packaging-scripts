@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source ./lib/clone
+source $SCRIPT_DIR/stages/lib/clone
 
 function build_persistenced () {
     clone yum-packaging-nvidia-persistenced
