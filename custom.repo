@@ -1,0 +1,5 @@
+[custom]
+name=custom
+baseurl=file:///path/to/repo
+enabled=1
+gpgcheck=0
