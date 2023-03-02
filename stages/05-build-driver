@@ -1,5 +1,7 @@
 #!/bin/sh
 
+source $SCRIPT_DIR/stages/lib/patch_tarball
+
 function build_driver () {
     if [ "$DOWNLOAD_FROM" == "UDA" ]; then
         TARTYPE="bz2"
@@ -32,34 +34,6 @@ function build_driver () {
         echo "Unknown url source \"${DOWNLOAD_FROM}\""
         exit 1
     fi
-
-    function patch_tarball () {
-        TARPATCH_TMPDIR=/tmp/nvidia-driver-tarball-patch
-        rm -rf $TARPATCH_TMPDIR
-        mkdir -p $TARPATCH_TMPDIR
-
-        local prefix=$1
-        local tversion=$2
-        local tarch=$3
-        local ext=$4
-        local filename="$prefix-$tversion-${tarch}.${ext}"
-        
-        cp $filename $TARPATCH_TMPDIR
-        pushd $TARPATCH_TMPDIR > /dev/null
-
-        tar -xf $filename
-        # rename the directory
-        mv "$prefix-${tversion}-${tarch}" "$prefix-${VERSION}-${tarch}"
-        # now re-tar it
-        if [ "$ext" == "tar.xz" ]; then
-            tar -cJf "$prefix-${VERSION}-${tarch}.${ext}" "$prefix-${VERSION}-${tarch}"
-        elif [ "$ext" == "tar.bz2" ]; then
-            tar -cjf "$prefix-${VERSION}-${tarch}.${ext}" "$prefix-${VERSION}-${tarch}"
-        fi
-        popd > /dev/null
-
-        mv "$TARPATCH_TMPDIR/$prefix-${VERSION}-${tarch}.${ext}" SOURCES/
-    }
 
     mkdir -p BUILD BUILDROOT RPMS SRPMS SOURCES SPECS
     cp *.rules SOURCES/

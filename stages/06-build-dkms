@@ -1,5 +1,7 @@
 #!/bin/sh
 
+source $SCRIPT_DIR/stages/lib/patch_tarball
+
 function build_dkms () {
 	# bring the tarball from before into this directory
 	rsync -av ../yum-packaging-nvidia-driver/nvidia-kmod-${ACTUAL_VERSION}-${ARCH}.tar.xz $PWD/
