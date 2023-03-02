@@ -3,6 +3,7 @@
 source $SCRIPT_DIR/stages/lib/patch_tarball
 
 function build_dkms () {
+    echo "actual version detected: $ACTUAL_VERSION"
 	# bring the tarball from before into this directory
 	rsync -av ../yum-packaging-nvidia-driver/nvidia-kmod-${ACTUAL_VERSION}-${ARCH}.tar.xz $PWD/
 
