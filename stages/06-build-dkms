@@ -1,5 +1,7 @@
 #!/bin/sh
 
+source $SCRIPT_DIR/stages/lib/patch_tarball
+
 function build_dkms () {
     echo "actual version detected: $ACTUAL_VERSION"
     # bring the tarball from before into this directory
@@ -9,7 +11,8 @@ function build_dkms () {
     mkdir -p BUILD BUILDROOT RPMS SRPMS SOURCES SPECS
     cp dkms-nvidia.conf SOURCES/
     # convert tarball to use VERSION instead of ACTUAL_VERSION
-    mv nvidia-kmod-${ACTUAL_VERSION}-${ARCH}.tar.xz SOURCES/
+    patch_tarball "nvidia-kmod" "$ACTUAL_VERSION" "$ARCH" "tar.xz"
+
     cp dkms-nvidia.spec SPECS/  
     rpmbuild \
         --define "%_topdir $(pwd)" \
