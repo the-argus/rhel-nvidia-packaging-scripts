@@ -51,7 +51,10 @@ pushd $BUILDDIR > /dev/null
 git_clone_driver_dkms
 download_runfile
 pushd yum-packaging-nvidia-driver > /dev/null
-ACTUAL_VERSION=$(build_tarballs)
+
+build_tarballs
+ACTUAL_VERSION=$(ls nvidia-driver-*-${ARCH}.tar.xz | sed -re "s/nvidia-driver-([0-9]{3}.[0-9]{2})-${ARCH}.tar.xz/\1/g")
+
 build_driver
 popd > /dev/null
 pushd yum-packaging-dkms-nvidia > /dev/null
