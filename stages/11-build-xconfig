@@ -2,7 +2,7 @@
 
 source ./lib/clone
 
-function build-xconfig () {
+function build_xconfig () {
     clone yum-packaging-nvidia-xconfig
     pushd yum-packaging-nvidia-xconfig > /dev/null
 	mkdir BUILD BUILDROOT RPMS SRPMS SOURCES SPECS

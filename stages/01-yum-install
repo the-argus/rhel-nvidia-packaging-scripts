@@ -1,6 +1,6 @@
 #!/bin/sh
 
-function yum-install () {
+function yum_install () {
     # separate call to yum to install EPEL
     sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-${RHEL_VERSION}.noarch.rpm
 

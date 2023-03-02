@@ -1,6 +1,6 @@
 #!/bin/sh
 
-function build-yum-plugin () {
+function build_yum_plugin () {
     if [ ! -d "yum-packaging-nvidia-plugin" ]; then
         git clone -b "rhel$RHEL_VERSION" "https://github.com/NVIDIA/yum-packaging-nvidia-plugin"
     fi

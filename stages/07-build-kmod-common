@@ -2,7 +2,7 @@
 
 source ./lib/clone
 
-function build-kmod-common () {
+function build_kmod_common () {
     clone yum-packaging-nvidia-kmod-common
     pushd yum-packaging-nvidia-kmod-common > /dev/null
 	mkdir BUILD BUILDROOT RPMS SRPMS SOURCES SPECS

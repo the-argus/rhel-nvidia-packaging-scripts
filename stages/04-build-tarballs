@@ -1,6 +1,6 @@
 #!/bin/sh
 
-function build-tarballs () {
+function build_tarballs () {
     # variables needed by the generate-tarballs
     export RUN_FILE="$ROOT/$RUNFILENAME"
     export extension=$TARTYPE

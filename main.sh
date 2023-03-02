@@ -41,27 +41,27 @@ XCONFIG_URL=
 ACTUAL_VERSION=
 
 # stage 1
-yum-install
+yum_install
 
 mkdir -p $BUILDDIR
 mkdir -p $OUTPUT
 
 pushd $BUILDDIR > /dev/null
-git-clone-driver-dkms
-download-runfile
+git_clone_driver_dkms
+download_runfile
 pushd yum-packaging-nvidia-driver > /dev/null
-build-tarballs
-build-driver
+build_tarballs
+build_driver
 popd > /dev/null
 pushd yum-packaging-dkms-nvidia > /dev/null
-build-dkms
+build_dkms
 popd > /dev/null
 
 # build kmod, this doesn't involve compilation so it should be fast
-build-kmod-common
-build-modprobe-common
-build-persistenced
-build-settings
-build-xconfig
-build-yum-plugin
+build_kmod_common
+build_modprobe_common
+build_persistenced
+build_settings
+build_xconfig
+build_yum_plugin
 popd > /dev/null

@@ -2,7 +2,7 @@
 
 source ./lib/clone
 
-function build-persistenced () {
+function build_persistenced () {
     clone yum-packaging-nvidia-persistenced
     pushd yum-packaging-nvidia-persistenced > /dev/null
 	mkdir BUILD BUILDROOT RPMS SRPMS SOURCES SPECS

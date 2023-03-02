@@ -2,7 +2,7 @@
 
 source ./lib/clone
 
-function build-modprobe-common () {
+function build_modprobe_common () {
     clone yum-packaging-nvidia-modprobe
     pushd yum-packaging-nvidia-modprobe > /dev/null
 	mkdir BUILD BUILDROOT RPMS SRPMS SOURCES SPECS

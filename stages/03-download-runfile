@@ -1,6 +1,6 @@
 #!/bin/sh
 
-function download-runfile () {
+function download_runfile () {
     # grab the runfile and export vars
     if [ -z $DONT_WGET_RUNFILE ]; then
         wget "$RUNFILE_URL" -O $ROOT/$RUNFILENAME

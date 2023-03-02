@@ -2,7 +2,7 @@
 
 source. /lib/clone
 
-function build-settings () {
+function build_settings () {
     clone yum-packaging-nvidia-settings
     pushd yum-packaging-nvidia-settings > /dev/null
 	mkdir BUILD BUILDROOT RPMS SRPMS SOURCES SPECS

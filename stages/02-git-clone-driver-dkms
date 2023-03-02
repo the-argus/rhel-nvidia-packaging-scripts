@@ -1,8 +1,8 @@
 #!/bin/sh
 
-import ./lib/clone
+source ./lib/clone
 
-function git-clone-driver-dkms () {
+function git_clone_driver_dkms () {
     clone yum-packaging-nvidia-driver
     clone yum-packaging-dkms-nvidia
 }

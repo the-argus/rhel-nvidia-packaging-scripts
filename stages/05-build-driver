@@ -1,6 +1,6 @@
 #!/bin/sh
 
-function build-driver () {
+function build_driver () {
     if [ "$DOWNLOAD_FROM" == "UDA" ]; then
         TARTYPE="bz2"
         
