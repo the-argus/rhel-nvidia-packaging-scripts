@@ -17,7 +17,7 @@ function build_dkms () {
     rpmbuild \
         --define "%_topdir $(pwd)" \
         --define "debug_package %{nil}" \
-        --define "version $ACTUAL_VERSION" \
+        --define "version $VERSION" \
         --define "driver_branch latest-dkms" \
         --define "is_dkms 1" \
         --define "is_latest 1" \
