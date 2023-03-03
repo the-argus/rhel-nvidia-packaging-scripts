@@ -12,3 +12,8 @@ should be automatically run by the package...)
 PATH=/opt/rh/devtoolset-9/root/bin:$PATH dkms build -m nvidia -v 470.141.03
 PATH=/opt/rh/devtoolset-9/root/bin:$PATH dkms install -m nvidia -v 470.141.03
 ```
+
+## Known Issues
+
+For version 470.141.03, ``nvidia-settings`` .spec file needs to be patched to
+remove the requirement for ``libnvidia-gtk3.so.470.141.03``.
