@@ -13,6 +13,10 @@ function build_dkms () {
     # convert tarball to use VERSION instead of ACTUAL_VERSION
     patch_tarball "nvidia-kmod" "$ACTUAL_VERSION" "$ARCH" "tar.xz"
 
+    # patch the .spec file to use newer compiler version
+    sed -i '/^Requires:\(.*\)dkms$/a Requires:\tdevtoolset-9-gcc' dkms-nvidia.spec
+    sed -i 's|^dkms build|PATH=\$PATH:opt/rh/devtoolset-9/root/bin dkms build|' dkms-nvidia.spec
+
     cp dkms-nvidia.spec SPECS/  
     rpmbuild \
         --define "%_topdir $(pwd)" \
