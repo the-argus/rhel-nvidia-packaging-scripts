@@ -9,13 +9,16 @@ function build_dkms () {
     
     # set up build
     mkdir -p BUILD BUILDROOT RPMS SRPMS SOURCES SPECS
-    cp dkms-nvidia.conf SOURCES/
     # convert tarball to use VERSION instead of ACTUAL_VERSION
     patch_tarball "nvidia-kmod" "$ACTUAL_VERSION" "$ARCH" "tar.xz"
 
     # patch the .spec file to use newer compiler version
     sed -i '/^Requires:\(.*\)dkms$/a Requires:\tdevtoolset-9-gcc' dkms-nvidia.spec
-    sed -i 's|^dkms build|PATH=\$PATH:opt/rh/devtoolset-9/root/bin dkms build|' dkms-nvidia.spec
+    # sed -i 's|^dkms build|PATH=\$PATH:opt/rh/devtoolset-9/root/bin dkms build|' dkms-nvidia.spec
+    # also patch the dkms configuration
+    sed -i "s|'make'|'PATH=\$PATH:opt/rh/devtoolset-9/root/bin make'|" dkms-nvidia.conf
+    cp dkms-nvidia.conf SOURCES/
+
 
     cp dkms-nvidia.spec SPECS/  
     rpmbuild \
