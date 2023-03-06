@@ -16,7 +16,7 @@ function build_dkms () {
     sed -i '/^Requires:\(.*\)dkms$/a Requires:\tdevtoolset-9-gcc' dkms-nvidia.spec
     # sed -i 's|^dkms build|PATH=\$PATH:opt/rh/devtoolset-9/root/bin dkms build|' dkms-nvidia.spec
     # also patch the dkms configuration
-    sed -i "s|'make'|'PATH=\$PATH:opt/rh/devtoolset-9/root/bin make'|" dkms-nvidia.conf
+    sed -i "s|'make'|'PATH=\$PATH:/opt/rh/devtoolset-9/root/bin make'|" dkms-nvidia.conf
     cp dkms-nvidia.conf SOURCES/
 
 
