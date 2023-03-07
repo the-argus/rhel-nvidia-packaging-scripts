@@ -25,7 +25,9 @@ function yum_install () {
     # GLVND (nvidia-settings)
     list+=("mesa-libGL-devel" "mesa-libEGL-devel")
     # Video extensions (nvidia-settings)
-    list+=("libXxf86vm-devel" "libXv-devel" "libvdpau-devel")  
+    list+=("libXxf86vm-devel" "libXv-devel" "libvdpau-devel")
+    # pciaccess (necessary for newer nvidia driver versions)
+    list+=("libpciaccess-devel")
     # Install all the build dependencies
     if [ -z $DONT_YUM_INSTALL ]; then
         sudo yum install ${list[@]}
