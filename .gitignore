@@ -1,3 +1,6 @@
 nvidia-*-build/
 rpm-nvidia/
 *.run
+
+*.tar.gz
+*.tar.xz
