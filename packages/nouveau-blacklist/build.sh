@@ -9,4 +9,4 @@ tar -czf nouveau-blacklist-${VERSION}.tar.gz ./SOURCES/*
 sed -i "s/__VERSION__/${VERSION}/g" ./SPECS/nouveau-blacklist.spec
 
 # perform build
-rpmbuild -bs ./SPECS/nouveau-blacklist.spec
+rpmbuild --define "%_topdir $(pwd)" -v -bs ./SPECS/nouveau-blacklist.spec
