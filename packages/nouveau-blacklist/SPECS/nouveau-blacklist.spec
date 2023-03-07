@@ -5,7 +5,7 @@ Summary:        Disable the nouveau driver
 BuildArch:      noarch
 
 License:        GPL
-Source0:        ${name}-%{version}.tar.gz
+Source0:        %{name}-%{version}.tar.gz
 
 %description
 Blacklists the nouveau kernel module. Useful when nouveau is loading before the
