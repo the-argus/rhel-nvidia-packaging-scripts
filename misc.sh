@@ -5,12 +5,12 @@
 source ./config
 
 for dir in ./packages/*; do
-    if [ ! -d ./packages/$dir ]; then
+    if [ ! -d $dir ]; then
         echo "Non-directory $dir found in packages directory. Skipping."
         continue
     fi
 
-    pushd ./packages/$dir > /dev/null
+    pushd $dir > /dev/null
 
     ./build.sh
     
