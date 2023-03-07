@@ -10,7 +10,7 @@ for dir in ./packages*; do
         continue
     fi
 
-    pushd ./packages/$dir > /dev/null
+    pushd "packages/$dir" > /dev/null
 
     ./build.sh
     
