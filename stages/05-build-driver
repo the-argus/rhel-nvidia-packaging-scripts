@@ -38,6 +38,12 @@ function build_driver () {
     mkdir -p BUILD BUILDROOT RPMS SRPMS SOURCES SPECS
     cp *.rules SOURCES/
     cp *.conf SOURCES/
+
+    if [ -z $NO_XORG ]; then
+        rm 10-nvidia.conf 10-nvidia-driver.conf
+        sed -i -E "/10-nvidia.*?\.conf/d" nvidia-driver.spec
+    fi;
+
     if [ -z $DONT_PATCH_TARBALL ]; then
         patch_tarball "nvidia-driver" "$ACTUAL_VERSION" "$ARCH" "tar.xz"
     fi

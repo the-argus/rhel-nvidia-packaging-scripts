@@ -62,3 +62,9 @@ The .spec file for ``nvidia-settings`` needs to be patched to
 remove the requirement for ``libnvidia-gtk3.so.470.141.03``. However, the actual
 driver does not always directly depend on the settings package, so most can just
 ignore this error.
+
+## Additional Options
+
+Defining the ``NO_XORG`` environment variable will cause the .spec file for the
+nvidia driver to be patched so as to exclude the Xorg config files which cause
+nvidia devices to be used for the display server. Untested.
