@@ -4,7 +4,7 @@
 
 source ./config
 
-for dir in ./packages*; do
+for dir in ./packages/*; do
     if [ ! -d ./packages/$dir ]; then
         echo "Non-directory $dir found in packages directory. Skipping."
         continue
