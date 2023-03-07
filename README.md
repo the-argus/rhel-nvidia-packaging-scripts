@@ -3,6 +3,19 @@
 A configurable set of scripts for building and packing the nvidia drivers on
 RHEL systems.
 
+## Tested Versions
+
+The following NVIDIA driver versions have been confirmed to build on rhel 7:
+
+- 470.141.03
+- 530.30.02
+
+Before trying a new version, confirm that there exists a branch at [the NVIDIA
+driver packaging repo](https://github.com/NVIDIA/yum-packaging-nvidia-driver)
+for your RHEL and driver version. For example, if you want to package 525.89.02
+on a RHEL 7 machine, make sure that the branch ``525-rhel7`` exists in that
+repository.
+
 ## Usage
 
 1. Configure your build. Open the ``config`` file and alter the version if
