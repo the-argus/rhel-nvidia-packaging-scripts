@@ -3,7 +3,10 @@
 VERSION="0.0.1"
 
 # tar the sources
-tar -czf SOURCES/nouveau-blacklist-${VERSION}.tar.gz ./SOURCES/*
+mkdir "nouveau-blacklist-${VERSION}"
+mv SOURCES/* nouveau-blacklist-${VERSION}
+
+tar -czf SOURCES/nouveau-blacklist-${VERSION}.tar.gz nouveau-blacklist-${VERSION}
 
 # patch the .spec file
 sed -i "s/__VERSION__/${VERSION}/g" ./SPECS/nouveau-blacklist.spec
